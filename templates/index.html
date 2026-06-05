@@ -1,1 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>GreenPulse</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+<div class="app-shell">
+  <header class="topbar">
+    <div>
+      <h1>GreenPulse</h1>
+      <p>Smart emergency green corridor dashboard</p>
+    </div>
+    <div class="header-actions">
+      <button id="singleAmbulanceBtn" class="secondary-btn">Single Ambulance</button>
+      <button id="sameRouteBtn" class="secondary-btn">Same Route Demo</button>
+      <button id="queueDemoBtn" class="secondary-btn">Queue Demo</button>
+      <button id="accidentDemoBtn" class="secondary-btn">Accident Scenario</button>
+      <button id="resetBtn" class="danger-btn">Reset</button>
+    </div>
+  </header>
 
+  <main class="layout">
+    <section class="left-panel">
+      <div class="card">
+        <h2>Create Emergency</h2>
+        <label>Emergency Type</label>
+        <select id="emergencyType">
+          <option value="medical">Medical Emergency</option>
+          <option value="accident">Road Accident</option>
+          <option value="fire">Fire Emergency</option>
+          <option value="police">Police Emergency</option>
+          <option value="rescue">Rescue Case</option>
+        </select>
+
+        <label>Emergency Spot</label>
+        <div id="selectedSpotBox" class="selected-box">Click a point on the city map</div>
+
+        <button id="startBtn" class="primary-btn" disabled>Find Nearest Free Vehicle & Dispatch</button>
+        <p class="helper-text">The selected point is matched to the nearest road junction, so the vehicle follows the road network.</p>
+      </div>
+
+      <div class="card">
+        <h2>Emergency Fleet</h2>
+        <div id="vehicleList" class="vehicle-list"></div>
+      </div>
+
+
+      <div class="card">
+        <h2>Emergency Queue</h2>
+        <div id="queueList" class="queue-list"></div>
+      </div>
+    </section>
+
+    <section class="map-section">
+      <div class="map-header">
+        <div>
+          <h2>Live City Map</h2>
+          <p>Emergency routes stay on the road network and signals update during movement.</p>
+        </div>
+        <div class="legend">
+          <span>🚑 Ambulance</span><span>🚒 Fire</span><span>🚓 Police</span>
+          <span>🚗 Normal</span><span>🚲 Cycle</span><span>🚶 Pedestrian</span>
+        </div>
+      </div>
+      <div id="map"></div>
+      <div class="map-note">Click inside the city zone to create an emergency request.</div>
+
+      <div class="card timeline-card timeline-under-map">
+        <h2>Emergency Activity Timeline</h2>
+        <div id="activityTimeline" class="timeline-list"></div>
+      </div>
+    </section>
+
+    <section class="right-panel">
+      <div class="card metrics-card compact-kpi-card">
+        <h2>Dashboard KPIs</h2>
+        <div class="kpi-grid">
+          <div class="kpi"><span>Total</span><strong id="kpiTotal">0</strong></div>
+          <div class="kpi"><span>Queue</span><strong id="kpiQueue">0</strong></div>
+          <div class="kpi"><span>Completed</span><strong id="kpiCompleted">0</strong></div>
+          <div class="kpi"><span>Avg Response</span><strong id="kpiAvg">-</strong></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Live Monitoring</h2>
+        <div class="status-row"><span>Status</span><strong id="systemStatus">Normal City Mode</strong></div>
+        <div class="status-row"><span>Active Emergencies</span><strong id="activeCount">0</strong></div>
+        <div class="status-row"><span>Signal Override</span><strong id="signalOverride">None</strong></div>
+        <div class="status-row"><span>Latest ETA</span><strong id="latestEta">-</strong></div>
+      </div>
+
+      <div class="card">
+        <h2>Active Emergencies</h2>
+        <div id="activeEmergencies" class="active-emergencies"></div>
+      </div>
+
+
+      <div class="card">
+        <h2>Analytics</h2>
+        <div id="analyticsBox" class="analytics-box"></div>
+        <a id="reportBtn" class="report-btn" href="/api/report" target="_blank">View / Print Emergency Report</a>
+      </div>
+    </section>
+  </main>
+</div>
+<div id="toastContainer" class="toast-container" aria-live="polite" aria-atomic="true"></div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
